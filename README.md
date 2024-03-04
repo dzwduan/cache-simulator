@@ -55,5 +55,8 @@ The testing can be done using the traces given to you in the repository. There a
 
 ## Refer
 1. CSE240A infrastructure
-1. [libCacheSim](https://github.com/1a1a11a/libCacheSim)
+1. [CacheMemory](https://yuhaozhu.com/CacheMemory.pdf)
+1. [A Primer on Memory Consistency and Cache Coherence](https://course.ece.cmu.edu/~ece847c/S15/lib/exe/fetch.php?media=part2_2_sorin12.pdf)
 1. [A Primer on Hardware Prefetching](https://picture.iczhiku.com/resource/eetop/WHiEgafHDzheKCNv.pdf)
+1. [The 3rd Data Prefetching Championship](https://dpc3.compas.cs.stonybrook.edu/)
+1. Computer Architecture: A Quantitative Approach (Sixth Edition) ch2

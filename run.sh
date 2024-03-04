@@ -1,7 +1,6 @@
-cd src
 make clean
 make
-cd ..
+
 
 for file in traces:
 do
@@ -10,7 +9,7 @@ do
     echo -n "MIPS-R10k:     ";echo $output
 
     output=`unzip2 -kc traces/$file | ./cache  --icache=512:2:64:2 --dcache=256:4:64:2 --l2cache=16384:8:64:50 --memspeed=100`
-    echo -n "Alpha-21264:     ";echo $output
+    echo -n "Alpha-21264:   ";echo $output
 
     echo "=============================================="
 done

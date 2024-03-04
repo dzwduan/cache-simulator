@@ -1,23 +1,10 @@
-//========================================================//
-//  cache.h                                               //
-//  Header file for the Cache Simulator                   //
-//                                                        //
-//  Includes function prototypes and global variables     //
-//  and defines for the cache simulator                   //
-//========================================================//
-
-#ifndef CACHE_HPP
-#define CACHE_HPP
+#pragma once
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <vector>
 
-//
-// Student Information
-//
-extern const char *studentName;
-extern const char *studentID;
-extern const char *email;
+using namespace std;
 
 //------------------------------------//
 //          Global Defines            //
@@ -25,6 +12,14 @@ extern const char *email;
 
 #define TRUE 1
 #define FALSE 0
+
+typedef struct metaData
+{
+    uint32_t tag;
+    uint32_t valid;
+    uint32_t dirty;
+
+} metaData;
 
 //------------------------------------//
 //        Cache Configuration         //
@@ -40,27 +35,27 @@ extern uint32_t dcacheAssoc;     // Associativity of the D$
 extern uint32_t dcacheBlocksize; // Blocksize of the D$
 extern uint32_t dcacheHitTime;   // Hit Time of the D$
 
-extern uint32_t l2cacheSets;     // Number of sets in the L2$
-extern uint32_t l2cacheAssoc;    // Associativity of the L2$
-extern uint32_t l2cacheBlocksize;// Blocksize of the L2$
-extern uint32_t l2cacheHitTime;  // Hit Time of the L2$
-extern uint32_t inclusive;       // Indicates if the L2 is inclusive
+extern uint32_t l2cacheSets;      // Number of sets in the L2$
+extern uint32_t l2cacheAssoc;     // Associativity of the L2$
+extern uint32_t l2cacheBlocksize; // Blocksize of the L2$
+extern uint32_t l2cacheHitTime;   // Hit Time of the L2$
+extern uint32_t inclusive;        // Indicates if the L2 is inclusive
 extern uint32_t prefetch;
 
-extern uint32_t blocksize;       // Block/Line size
-extern uint32_t memspeed;        // Latency of Main Memory
+extern uint32_t blocksize; // Block/Line size
+extern uint32_t memspeed;  // Latency of Main Memory
 
 //------------------------------------//
 //          Cache Statistics          //
 //------------------------------------//
 
-extern uint64_t icacheRefs;       // I$ references
-extern uint64_t icacheMisses;     // I$ misses
-extern uint64_t icachePenalties;  // I$ penalties
+extern uint64_t icacheRefs;      // I$ references
+extern uint64_t icacheMisses;    // I$ misses
+extern uint64_t icachePenalties; // I$ penalties
 
-extern uint64_t dcacheRefs;       // D$ references
-extern uint64_t dcacheMisses;     // D$ misses
-extern uint64_t dcachePenalties;  // D$ penalties
+extern uint64_t dcacheRefs;      // D$ references
+extern uint64_t dcacheMisses;    // D$ misses
+extern uint64_t dcachePenalties; // D$ penalties
 
 extern uint64_t l2cacheRefs;      // L2$ references
 extern uint64_t l2cacheMisses;    // L2$ misses
@@ -102,7 +97,97 @@ void icache_prefetch(uint32_t addr);
 
 void dcache_prefetch(uint32_t addr);
 
+enum class CacheType
+{
+    L1_ICACHE,
+    L1_DCACHE,
+    L2_ICACHE,
+    L2_DCACHE
+};
+
+enum class ReplacePolicy
+{
+    RANDOM,
+    LRU,
+    FIFO,
+    PLRU
+};
+
+enum class PrefetchPolicy {
+    NO_PREFETCH,
+    STRIDE,
+    STREAM
+};
 
 
 
-#endif
+
+class CacheLine
+{
+private:
+    int valid;
+    int dirty;
+    int index;
+    int tag;
+    int vaddr;
+    int tag_mask;
+    int tag_shift;
+    int set_mask;
+    int set_shift;
+    int index_mask;
+    int index_shift;
+
+public:
+    int getTag()
+    {
+        return (vaddr >> tag_shift) & tag_mask;
+    }
+
+    int getIndex()
+    {
+        return (vaddr >> index_shift) & index_mask;
+    }
+
+    int getSet() {
+        return (vaddr >> set_shift) & set_mask;
+    }
+
+    int getValid()
+    {
+        return valid;
+    }
+
+    int getDirty()
+    {
+        return dirty;
+    }
+
+    void setValid(int v)
+    {
+        valid = v;
+    }
+
+    void setDirty(int d)
+    {
+        dirty = d;
+    }
+};
+
+class Cache
+{
+private:
+    CacheType type;
+    CacheLine *lines;
+    vector<uint32_t> data;
+    int size; // cache size
+    int lineSize;
+    int assoc;
+
+
+
+    
+
+    ReplacePolicy replacePolicy;
+    PrefetchPolicy prefetchPolicy;
+
+};

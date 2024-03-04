@@ -1,5 +1,5 @@
 //========================================================//
-//  cache.c                                               //
+//  cache.cpp                                               //
 //  Source file for the Cache Simulator                   //
 //                                                        //
 //  Implement the I-cache, D-Cache and L2-cache as        //
@@ -8,12 +8,6 @@
 
 #include "cache.hpp"
 
-//
-// TODO:Student Information
-//
-const char *studentName = "NAME";
-const char *studentID   = "PID";
-const char *email       = "EMAIL";
 
 //------------------------------------//
 //        Cache Configuration         //
@@ -62,9 +56,7 @@ uint64_t other_miss;       // Other misses (Conflict / Capacity miss) on all cac
 //        Cache Data Structures       //
 //------------------------------------//
 
-//
-//TODO: Add your Cache data structures here
-//
+
 
 //------------------------------------//
 //          Cache Functions           //
@@ -89,9 +81,7 @@ init_cache()
   compulsory_miss = 0;
   other_miss = 0;
   
-  //
-  //TODO: Initialize Cache Simulator Data Structures
-  //
+
 }
 
 // Clean Up the Cache Hierarchy
@@ -99,9 +89,7 @@ init_cache()
 void
 clean_cache()
 {
-  //
-  //TODO: Clean Up Cache Simulator Data Structures
-  //
+
 }
 
 // Perform a memory access through the icache interface for the address 'addr'
@@ -182,4 +170,13 @@ dcache_prefetch(uint32_t addr)
   //
   //TODO: Implement D$ prefetch operation
   //
+}
+
+
+uint32_t icache_replace(uint32_t addr) {
+
+}
+
+uint32_t dcache_replace(uint32_t addr) {
+
 }

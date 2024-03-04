@@ -57,13 +57,6 @@ handle_option(char *arg)
   return 1;
 }
 
-void
-printStudentInfo()
-{
-  printf("Student Name:   %s\n", studentName);
-  printf("Student ID:     %s\n", studentID);
-  printf("Student email:  %s\n", email);
-}
 
 // Print out the memory hierarchy
 //
