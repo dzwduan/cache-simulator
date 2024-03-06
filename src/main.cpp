@@ -243,8 +243,6 @@ main(int argc, char *argv[])
     }
   }
 
-  // Print out the statistics
-  printStudentInfo();
   printCacheConfig();
   printCacheStats();
   printf("Total Memory accesses:  %lu\n", totalRefs);

@@ -19,6 +19,25 @@
 
 ...
 
+## Optimization
+- [ ] way prediction
+- [ ] multi bank
+- [ ] MSHR
+- [ ] critical word first
+- [ ] early restart
+- [ ] write merging
+- [ ] compiler 
+
+## Basic
+- [ ] fully-associative
+- [ ] set-associative
+- [ ] direct-mapped
+- [ ] write through + non-write allocate
+- [ ] write back + write allocate
+- [ ] victim cache
+- [ ] PIPT
+- [ ] VIPT
+
 
 ## Testing
 Once you have created the binary, you can run it with the following command:
@@ -53,10 +72,14 @@ The testing can be done using the traces given to you in the repository. There a
 
 
 
+
+
 ## Refer
 1. CSE240A infrastructure
 1. [CacheMemory](https://yuhaozhu.com/CacheMemory.pdf)
 1. [A Primer on Memory Consistency and Cache Coherence](https://course.ece.cmu.edu/~ece847c/S15/lib/exe/fetch.php?media=part2_2_sorin12.pdf)
 1. [A Primer on Hardware Prefetching](https://picture.iczhiku.com/resource/eetop/WHiEgafHDzheKCNv.pdf)
 1. [The 3rd Data Prefetching Championship](https://dpc3.compas.cs.stonybrook.edu/)
-1. Computer Architecture: A Quantitative Approach (Sixth Edition) ch2
+1. Computer Architecture: A Quantitative Approach (Sixth Edition) CH2 + Appendix B
+1. [cache tutorial](https://safari.ethz.ch/architecture/fall2023/doku.php?id=schedule)
+1. [cache test](https://github.com/comparch-security/FlexiCAS)

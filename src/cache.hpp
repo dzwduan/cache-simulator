@@ -13,14 +13,6 @@ using namespace std;
 #define TRUE 1
 #define FALSE 0
 
-typedef struct metaData
-{
-    uint32_t tag;
-    uint32_t valid;
-    uint32_t dirty;
-
-} metaData;
-
 //------------------------------------//
 //        Cache Configuration         //
 //------------------------------------//
@@ -115,79 +107,7 @@ enum class ReplacePolicy
 
 enum class PrefetchPolicy {
     NO_PREFETCH,
+    NEXT_LINE,
     STRIDE,
     STREAM
-};
-
-
-
-
-class CacheLine
-{
-private:
-    int valid;
-    int dirty;
-    int index;
-    int tag;
-    int vaddr;
-    int tag_mask;
-    int tag_shift;
-    int set_mask;
-    int set_shift;
-    int index_mask;
-    int index_shift;
-
-public:
-    int getTag()
-    {
-        return (vaddr >> tag_shift) & tag_mask;
-    }
-
-    int getIndex()
-    {
-        return (vaddr >> index_shift) & index_mask;
-    }
-
-    int getSet() {
-        return (vaddr >> set_shift) & set_mask;
-    }
-
-    int getValid()
-    {
-        return valid;
-    }
-
-    int getDirty()
-    {
-        return dirty;
-    }
-
-    void setValid(int v)
-    {
-        valid = v;
-    }
-
-    void setDirty(int d)
-    {
-        dirty = d;
-    }
-};
-
-class Cache
-{
-private:
-    CacheType type;
-    CacheLine *lines;
-    vector<uint32_t> data;
-    int size; // cache size
-    int lineSize;
-    int assoc;
-
-
-
-    
-
-    ReplacePolicy replacePolicy;
-    PrefetchPolicy prefetchPolicy;
-
 };
