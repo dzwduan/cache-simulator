@@ -31,7 +31,7 @@
 
 ## Basic
 - [ ] fully-associative
-- [ ] set-associative
+- [x] set-associative
 - [ ] direct-mapped
 - [ ] write through + non-write allocate
 - [ ] write back + write allocate
@@ -41,7 +41,7 @@
 
 ## run
 
-1. simple cache test with LRU, trace refer  https://occs.oberlin.edu/~ctaylor/classes/210SP13/traces.zip
+1. simple cache test with LRU, trace refer [here](https://occs.oberlin.edu/~ctaylor/classes/210SP13/traces.zip)
 ```
 make clean
 make simple-run
