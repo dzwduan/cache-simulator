@@ -34,7 +34,7 @@
 - [x] set-associative
 - [ ] direct-mapped
 - [ ] write through + non-write allocate
-- [ ] write back + write allocate
+- [x] write back + write allocate (add dirty bit)
 - [ ] victim cache
 - [ ] PIPT
 - [ ] VIPT
@@ -83,7 +83,7 @@ The testing can be done using the traces given to you in the repository. There a
 
 
 ## Refer
-1. CSE240A infrastructure
+1. trace from ECE447 + CSE240A  + ECE563
 1. [CacheMemory](https://yuhaozhu.com/CacheMemory.pdf)
 1. [A Primer on Memory Consistency and Cache Coherence](https://course.ece.cmu.edu/~ece847c/S15/lib/exe/fetch.php?media=part2_2_sorin12.pdf)
 1. [A Primer on Hardware Prefetching](https://picture.iczhiku.com/resource/eetop/WHiEgafHDzheKCNv.pdf)
@@ -91,3 +91,4 @@ The testing can be done using the traces given to you in the repository. There a
 1. Computer Architecture: A Quantitative Approach (Sixth Edition) CH2 + Appendix B
 1. [cache tutorial](https://safari.ethz.ch/architecture/fall2023/doku.php?id=schedule)
 1. [cache test](https://github.com/comparch-security/FlexiCAS)
+1. [NJU slides](https://cs.nju.edu.cn/swang/CA_16S/index.htm)

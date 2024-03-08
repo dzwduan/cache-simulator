@@ -3,110 +3,108 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <vector>
+#include <bitset>
 
 using namespace std;
 
 //------------------------------------//
-//          Global Defines            //
-//------------------------------------//
-
-#define TRUE 1
-#define FALSE 0
-
-//------------------------------------//
 //        Cache Configuration         //
 //------------------------------------//
+class CacheBase
+{
+public:
+    virtual ~CacheBase() = default;
+    // Perform a memory access through the cache interface for the address 'addr'
+    // Return the access time for the memory operation
+    virtual uint32_t cache_access(uint32_t addr) = 0;
 
-extern uint32_t icacheSets;      // Number of sets in the I$
-extern uint32_t icacheAssoc;     // Associativity of the I$
-extern uint32_t icacheBlocksize; // Blocksize of the I$
-extern uint32_t icacheHitTime;   // Hit Time of the I$
+    // Predict an address to prefetch on dcache with the information of last dcache access:
+    // 'pc':     Program Counter of the instruction of last dcache access
+    // 'addr':   Accessed Address of last dcache access
+    // 'r_or_w': Read/Write of last dcache access
+    virtual uint32_t cache_prefetch_addr(uint32_t pc, uint32_t addr, bool rw) = 0;
 
-extern uint32_t dcacheSets;      // Number of sets in the D$
-extern uint32_t dcacheAssoc;     // Associativity of the D$
-extern uint32_t dcacheBlocksize; // Blocksize of the D$
-extern uint32_t dcacheHitTime;   // Hit Time of the D$
+    // Perform a prefetch operation to I$ for the address 'addr'
+    virtual void cache_prefetch(uint32_t addr, PrefetchPolicy policy) = 0;
 
-extern uint32_t l2cacheSets;      // Number of sets in the L2$
-extern uint32_t l2cacheAssoc;     // Associativity of the L2$
-extern uint32_t l2cacheBlocksize; // Blocksize of the L2$
-extern uint32_t l2cacheHitTime;   // Hit Time of the L2$
-extern uint32_t inclusive;        // Indicates if the L2 is inclusive
-extern uint32_t prefetch;
+    // 最多8路组相联的替换策略
+    virtual uint8_t cache_replace(uint32_t addr, ReplacePolicy policy) = 0;
 
-extern uint32_t blocksize; // Block/Line size
-extern uint32_t memspeed;  // Latency of Main Memory
+protected:
+    uint32_t sets;
+    uint32_t assoc;
+    uint32_t blockSize;
+    uint32_t hitTime;
+    CacheType type;
 
-//------------------------------------//
-//          Cache Statistics          //
-//------------------------------------//
+    // statistics
+    uint64_t refs;            // $ references
+    uint64_t misses;          // $ misses
+    uint64_t penalties;       // $ penalties
+    uint64_t compulsory_miss; // Compulsory misses on all caches
+    uint64_t other_miss;      // Other misses (Conflict / Capacity miss) on all caches
+};
 
-extern uint64_t icacheRefs;      // I$ references
-extern uint64_t icacheMisses;    // I$ misses
-extern uint64_t icachePenalties; // I$ penalties
 
-extern uint64_t dcacheRefs;      // D$ references
-extern uint64_t dcacheMisses;    // D$ misses
-extern uint64_t dcachePenalties; // D$ penalties
+class L1_ICache : public CacheBase
+{
+public:
+    L1_ICache(uint32_t sets, uint32_t assoc, uint32_t blockSize, uint32_t hitTime, CacheType type) :
+    data(sets, vector<uint32_t>(assoc, 0)) {
+        this->sets = sets;
+        this->assoc = assoc;
+        this->blockSize = blockSize;
+        this->hitTime = hitTime;
+        this->type = type;
 
-extern uint64_t l2cacheRefs;      // L2$ references
-extern uint64_t l2cacheMisses;    // L2$ misses
-extern uint64_t l2cachePenalties; // L2$ penalties
+        // statistics
+        this->refs = 0;
+        this->misses = 0;
+        this->penalties = 0;
+        this->compulsory_miss = 0;
+        this->other_miss = 0;
+    }
+    ~L1_ICache() {
+        for (int i = 0; i < sets; i++) {
+            data[i].clear();
+        }
+        data.clear();
+    }
 
-extern uint64_t compulsory_miss;
-extern uint64_t other_miss;
+    uint32_t cache_access(uint32_t addr) override {
+        return 0;
+    }
+    uint32_t cache_prefetch_addr(uint32_t pc, uint32_t addr, bool rw) override {
+        return 0;
+    }
+    void cache_prefetch(uint32_t addr, PrefetchPolicy policy) override {
 
-//------------------------------------//
-//      Cache Function Prototypes     //
-//------------------------------------//
+    }
+    uint8_t cache_replace(uint32_t addr, ReplacePolicy policy) override {
+        return 0;
+    }
 
-// Initialize the predictor
-//
-void init_cache();
+private:
+    vector<vector<uint32_t>> data;
+};
 
-void clean_cache();
-
-// Perform a memory access through the icache interface for the address 'addr'
-// Return the access time for the memory operation
-//
-uint32_t icache_access(uint32_t addr);
-
-// Perform a memory access through the dcache interface for the address 'addr'
-// Return the access time for the memory operation
-//
-uint32_t dcache_access(uint32_t addr);
-
-// Perform a memory access to the l2cache for the address 'addr'
-// Return the access time for the memory operation
-//
-uint32_t l2cache_access(uint32_t addr);
-
-uint32_t icache_prefetch_addr(uint32_t pc, uint32_t addr, char r_or_w);
-
-uint32_t dcache_prefetch_addr(uint32_t pc, uint32_t addr, char r_or_w);
-
-void icache_prefetch(uint32_t addr);
-
-void dcache_prefetch(uint32_t addr);
 
 enum class CacheType
 {
     L1_ICACHE,
     L1_DCACHE,
-    L2_ICACHE,
-    L2_DCACHE
+    L2_CACHE
 };
 
 enum class ReplacePolicy
 {
-    RANDOM,
     LRU,
     FIFO,
     PLRU
 };
 
-enum class PrefetchPolicy {
-    NO_PREFETCH,
+enum class PrefetchPolicy
+{
     NEXT_LINE,
     STRIDE,
     STREAM
