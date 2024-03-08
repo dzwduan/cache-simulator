@@ -20,6 +20,20 @@ build_dir:
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp $(HEADERS)
 	@$(CXX) $(CXXFLAGS) $(addprefix -I,${DIRS}) -c $< -o $@
 
+simple: $(SRC_DIR)/simple_cache.cpp
+	@$(CXX) --std=c++20 $<  -o $@
+
+.PHONY: simple-run
+simple-run: simple
+	@echo "====================art_trace======================" > simple_output.txt
+	@./simple traces/art.trace >> simple_output.txt
+	@echo "====================crafty_trace===================" >> simple_output.txt
+	@./simple traces/crafty_mem.trace >> simple_output.txt
+	@echo "====================mcf_trace======================" >> simple_output.txt
+	@./simple traces/mcf.trace >> simple_output.txt
+	@echo "====================swim_trace=====================" >> simple_output.txt
+	@./simple traces/swim.trace >> simple_output.txt
+
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR) simple *.txt

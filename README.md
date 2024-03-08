@@ -27,6 +27,7 @@
 - [ ] early restart
 - [ ] write merging
 - [ ] compiler 
+- [ ] coherence
 
 ## Basic
 - [ ] fully-associative
@@ -38,6 +39,13 @@
 - [ ] PIPT
 - [ ] VIPT
 
+## run
+
+1. simple cache test with LRU, trace refer  https://occs.oberlin.edu/~ctaylor/classes/210SP13/traces.zip
+```
+make clean
+make simple-run
+```
 
 ## Testing
 Once you have created the binary, you can run it with the following command:
